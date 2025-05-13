@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../meal_api.dart';
+import '../pages/infoFoodPage.dart';
+import '../models/meal.dart';
 
 class MainPage extends StatelessWidget {
   @override
@@ -22,12 +24,33 @@ class MainPage extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final meal = snapshot.data![index];
+                    List<String> l=["d","d"];
                     return ListTile(
                       leading: Image.network(meal['strMealThumb'], width: 50),
                       title: Text(meal['strMeal']),
                       subtitle: Text("Категория: ${meal['strCategory']}"),
                       onTap: () {
-                        print("Рецепт: ${meal['strInstructions']}");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => InfoFoodPage(
+                              meal: Meal(
+                                id: meal['idMeal'] ?? '',
+                                name: meal['strMeal'] ?? '',
+                                category: meal['strCategory'] ?? '',
+                                area: meal['strArea'] ?? '',
+                                instructions: meal['strInstructions'] ?? '',
+                                imageUrl: meal['strMealThumb'] ?? '',
+                                ingredients: List<String>.generate(20, (i) => meal['strIngredient${i + 1}'] ?? '')
+                                    .where((ingredient) => ingredient.isNotEmpty)
+                                    .toList(),
+                                measures: List<String>.generate(20, (i) => meal['strMeasure${i + 1}'] ?? '')
+                                    .where((measure) => measure.isNotEmpty)
+                                    .toList(),
+                              ),
+                            ),
+                          ),
+                        );
                       },
                     );
                   },
