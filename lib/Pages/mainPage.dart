@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import '../meal_api.dart';
-import '../pages/infoFoodPage.dart';
 import '../models/meal.dart';
+import '../navigations.dart';
 
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text("TheMealDB API Example")),
+        //appBar: AppBar(title: Text("TheMealDB API Example")),
         body: Center(
           child: FutureBuilder<List<Map<String, dynamic>>>(
             future: MealApi.findRecipesByIngredients(["chicken"]),
@@ -29,26 +29,22 @@ class MainPage extends StatelessWidget {
                       title: Text(meal['strMeal']),
                       subtitle: Text("Категория: ${meal['strCategory']}"),
                       onTap: () {
-                        Navigator.push(
+                        Navigations.navigateToInfoFoodPage(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => InfoFoodPage(
-                              meal: Meal(
-                                id: meal['idMeal'] ?? '',
-                                name: meal['strMeal'] ?? '',
-                                category: meal['strCategory'] ?? '',
-                                area: meal['strArea'] ?? '',
-                                instructions: meal['strInstructions'] ?? '',
-                                imageUrl: meal['strMealThumb'] ?? '',
-                                ingredients: List<String>.generate(20, (i) => meal['strIngredient${i + 1}'] ?? '')
-                                    .where((ingredient) => ingredient.isNotEmpty)
-                                    .toList(),
-                                measures: List<String>.generate(20, (i) => meal['strMeasure${i + 1}'] ?? '')
-                                    .where((measure) => measure.isNotEmpty)
-                                    .toList(),
-                              ),
+                          Meal(
+                            id: meal['idMeal'] ?? '',
+                            name: meal['strMeal'] ?? '',
+                            category: meal['strCategory'] ?? '',
+                            area: meal['strArea'] ?? '',
+                            instructions: meal['strInstructions'] ?? '',
+                            imageUrl: meal['strMealThumb'] ?? '',
+                            ingredients: List<String>.generate(20, (i) => meal['strIngredient${i + 1}'] ?? '')
+                                .where((ingredient) => ingredient.isNotEmpty)
+                                .toList(),
+                            measures: List<String>.generate(20, (i) => meal['strMeasure${i + 1}'] ?? '')
+                                .where((measure) => measure.isNotEmpty)
+                                .toList(),
                             ),
-                          ),
                         );
                       },
                     );
