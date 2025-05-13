@@ -24,7 +24,6 @@ class MainPage extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final meal = snapshot.data![index];
-                    List<String> l=["d","d"];
                     return ListTile(
                       leading: Image.network(meal['strMealThumb'], width: 50),
                       title: Text(meal['strMeal']),
